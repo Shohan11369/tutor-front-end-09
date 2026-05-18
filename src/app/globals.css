@@ -1,2 +1,36 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  @apply bg-white text-black transition-colors duration-300;
+}
+
+.dark body {
+  @apply bg-gray-900 text-white;
+}
+
+/* All Sections */
+.dark section {
+  @apply bg-gray-900 text-white;
+}
+
+/* All Cards */
+.dark div {
+  border-color: rgb(55 65 81);
+}
+
+/* All Paragraphs */
+.dark p {
+  color: rgb(209 213 219);
+}
+
+/* All Headings */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: white;
+}

@@ -24,11 +24,13 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
         <Navbar />
+
         <main className="flex-grow container mx-auto px-4 py-8">
           {children}
         </main>
+
         <Footer />
       </body>
     </html>
