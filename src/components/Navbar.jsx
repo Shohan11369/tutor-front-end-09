@@ -1,106 +1,58 @@
 "use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
 
 export default function Navbar() {
-  const router = useRouter();
-
-   
-  // const user = { email: 'student@medschool.edu', name: 'Dr. Rahul' };
-
-  const user = null;
-
-  const handleLogout = () => {
-    router.refresh();
-  };
+  // true = লগইন করা আছে, false = লগইন করা নেই
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <div className=" p-5 navbar bg-white shadow-md px-6 sticky top-0 z-50">
-    
-      <div className="flex w-full items-center">
-       
-        <div className="flex-1 justify-start">
-          <Link
-            href="/"
-            className="text-2xl font-black text-blue-600 tracking-tight"
-          >
-            Medi<span className="text-teal-500">Queue</span>
-          </Link>
+    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <div className="text-xl font-bold text-teal-600 tracking-wide cursor-pointer">
+          Tutors-Finder
         </div>
 
-      
-        <div className="flex-none justify-center">
-          <ul className="flex justify-between menu menu-horizontal px-1 font-medium text-slate-600 gap-2">
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/tutors">Find Tutors</Link>
-            </li>
-
-            {user && (
-              <>
-                <li>
-                  <Link href="/add-tutor">Add Tutor</Link>
-                </li>
-                <li>
-                  <Link href="/my-tutorials">My Tutorials</Link>
-                </li>
-                <li>
-                  <Link href="/my-bookings">My Bookings</Link>
-                </li>
-              </>
-            )}
-          </ul>
+        {/* Links */}
+        <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-500">
+          <a href="#" className="text-teal-600">Home</a>
+          <a href="#" className="hover:text-teal-600 transition">Tutors</a>
+          <a href="#" className="hover:text-teal-600 transition">Services</a>
+          <a href="#" className="hover:text-teal-600 transition">About</a>
+          <a href="#" className="hover:text-teal-600 transition">Contact</a>
         </div>
 
-       
-        <div className="flex-1 flex justify-end items-center">
-          {user ? (
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar online"
+        {/* Dynamic Auth Buttons */}
+        <div className="flex items-center space-x-4">
+          {!isLoggedIn ? (
+            <>
+              <button 
+                onClick={() => setIsLoggedIn(true)} 
+                className="bg-teal-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-teal-700 transition"
               >
-                <div className="w-10 rounded-full ring ring-blue-500 ring-offset-base-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=150&q=80"
-                    alt="Profile"
-                  />
-                </div>
-              </div>
-              <ul
-                tabIndex={0}
-                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-              >
-                <li className="px-4 py-2 font-bold text-slate-700">
-                  {user.name}
-                </li>
-                <li className="text-xs px-4 pb-2 text-slate-400">
-                  {user.email}
-                </li>
-                <div className="divider my-0"></div>
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className="text-red-500 font-semibold"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
+                Login
+              </button>
+              <button className="border border-teal-600 text-teal-600 px-5 py-2 rounded-md text-sm font-medium hover:bg-teal-50 transition">
+                Register
+              </button>
+            </>
           ) : (
-            <Link
-              href="/login"
-              className="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-6"
+            /* After Login User Profile */
+            <div 
+              className="flex items-center space-x-3 cursor-pointer" 
+              onClick={() => setIsLoggedIn(false)}
+              title="Click to Logout"
             >
-              Login
-            </Link>
+              <span className="text-sm font-medium text-gray-700 hidden sm:inline">John Doe</span>
+              <img 
+                className="h-9 w-9 rounded-full object-cover border-2 border-teal-500" 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" 
+                alt="User Profile" 
+              />
+            </div>
           )}
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

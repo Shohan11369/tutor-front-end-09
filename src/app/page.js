@@ -1,9 +1,15 @@
-import Image from "next/image";
+import Features from '@/components/Features';
+import Hero from '@/components/Hero';
+import Link from 'next/link';
 
-export default function Home() {
+
+
+export default async function HomePage() {
+  
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-     
+    <div className="space-y-16 pb-12">
+      <Hero/>
+      {/* <Features/> */}
     </div>
   );
 }
