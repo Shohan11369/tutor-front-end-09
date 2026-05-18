@@ -1,15 +1,17 @@
-import Features from '@/components/Features';
-import Hero from '@/components/Hero';
-import Link from 'next/link';
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import Features from "@/components/Features";
+import Footer from "@/components/Footer";
 
-
-
-export default async function HomePage() {
-  
+export default function Home() {
   return (
-    <div className="space-y-16 pb-12">
-      <Hero/>
-      {/* <Features/> */}
-    </div>
+    <main className="min-h-screen bg-gray-50 flex flex-col justify-between">
+      <div>
+        
+        <Hero />
+        {/* <Features /> */}
+      </div>
+      
+    </main>
   );
 }
