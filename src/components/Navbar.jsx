@@ -40,7 +40,7 @@ export default function Navbar() {
         {/* Navigation Links */}
         <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-500 dark:text-gray-300">
           <Link href="/" className="hover:text-teal-600 transition">Home</Link>
-          <Link href="/tutors" className="hover:text-teal-600 transition">Tutors</Link>
+          <Link href="/tutor" className="hover:text-teal-600 transition">Tutors</Link>
           
           {/* if login the show  */}
           {user && (
