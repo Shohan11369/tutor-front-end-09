@@ -5,7 +5,7 @@ export default function AddTutorPage() {
   const [formData, setFormData] = useState({
     tutorName: "",
     tutorImage: "",
-    subject: "Mathematics", // ডিফল্ট ড্রপডাউন ভ্যালু
+    subject: "Mathematics", 
     availableDays: "",
     availableTime: "",
     hourlyFee: "",
@@ -14,7 +14,7 @@ export default function AddTutorPage() {
     institution: "",
     experience: "",
     location: "",
-    teachingMode: "Online" // ডিফল্ট ড্রপডাউন ভ্যালু
+    teachingMode: "Online" 
   });
 
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ export default function AddTutorPage() {
     e.preventDefault();
     setLoading(true);
 
-    // লকার ইমেইল ডামি হিসেবে অ্যাডমিন ট্র্যাকিংয়ের জন্য পাঠানো হচ্ছে (অথ পরে ডায়নামিক হবে)
+
     const finalData = {
       ...formData,
       userEmail: "admin@gmail.com" 
@@ -49,7 +49,7 @@ export default function AddTutorPage() {
 
       if (response.ok) {
         showToast("Tutor Session Created Successfully! 🎉", "success");
-        // ফর্ম ক্লিয়ার করা
+      
         setFormData({
           tutorName: "",
           tutorImage: "",
@@ -77,7 +77,7 @@ export default function AddTutorPage() {
   return (
     <div className="min-h-screen bg-[#0b0f19] text-white py-12 px-4 sm:px-6 lg:px-8 relative">
       
-      {/* কাস্টম নোটিফিকেশন টোস্ট */}
+  
       {toast.text && (
         <div className={`fixed top-5 right-5 z-50 px-6 py-3 rounded-xl shadow-2xl font-medium text-sm border ${
           toast.type === "error" ? "bg-red-950 border-red-500 text-red-200" : "bg-emerald-950 border-emerald-500 text-emerald-200"
