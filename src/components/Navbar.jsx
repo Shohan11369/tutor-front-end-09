@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Navbar() {
   
@@ -42,44 +43,50 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 
         {/* Logo */}
-        <div className="text-xl font-bold text-teal-600 tracking-wide cursor-pointer">
+        <Link
+          href="/"
+          className="text-xl font-bold text-teal-600 tracking-wide cursor-pointer"
+        >
           Tutors-Finder
-        </div>
+        </Link>
 
         {/* Links */}
         <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-500 dark:text-gray-300">
           
-          <a href="#" className="text-teal-600">
+          <Link
+            href="/"
+            className="text-teal-600 hover:text-teal-700 transition"
+          >
             Home
-          </a>
+          </Link>
 
-          <a
-            href="#"
+          <Link
+            href="/tutors"
             className="hover:text-teal-600 transition"
           >
             Tutors
-          </a>
+          </Link>
 
-          <a
-            href="#"
+          <Link
+            href="/services"
             className="hover:text-teal-600 transition"
           >
             Services
-          </a>
+          </Link>
 
-          <a
-            href="#"
+          <Link
+            href="/about"
             className="hover:text-teal-600 transition"
           >
             About
-          </a>
+          </Link>
 
-          <a
-            href="#"
+          <Link
+            href="/contact"
             className="hover:text-teal-600 transition"
           >
             Contact
-          </a>
+          </Link>
         </div>
 
         {/* Right Side */}
@@ -96,16 +103,20 @@ export default function Navbar() {
           {/* Auth Buttons */}
           {!isLoggedIn ? (
             <>
-              <button
-                onClick={() => setIsLoggedIn(true)}
-                className="bg-teal-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-teal-700 transition"
-              >
-                Login
-              </button>
+              <Link href="/login">
+                <button
+                  onClick={() => setIsLoggedIn(true)}
+                  className="bg-teal-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-teal-700 transition"
+                >
+                  Login
+                </button>
+              </Link>
 
-              <button className="border border-teal-600 text-teal-600 dark:text-teal-400 px-5 py-2 rounded-md text-sm font-medium hover:bg-teal-50 dark:hover:bg-gray-800 transition">
-                Register
-              </button>
+              <Link href="/register">
+                <button className="border border-teal-600 text-teal-600 dark:text-teal-400 px-5 py-2 rounded-md text-sm font-medium hover:bg-teal-50 dark:hover:bg-gray-800 transition">
+                  Register
+                </button>
+              </Link>
             </>
           ) : (
             <div
