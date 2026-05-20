@@ -1,152 +1,117 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Swal from "sweetalert2";
-import { authClient } from "@/lib/auth-client"; 
+'use client';
 
-const RegisterPage = () => {
-  const [passError, setPassError] = useState("");
-  const router = useRouter();
+import { useState } from 'react';
+import { Button, Input } from '@heroui/react';
+import Link from 'next/link';
+import { User, Mail, Lock, ArrowRight, Image as ImageIcon, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { signIn } from '@/lib/auth-client'; // 🎯 Google অথেন্টিকেশনের জন্য ইমপোর্ট
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const photo = form.photo.value;
-    const password = form.password.value;
+export default function Register() {
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
-    setPassError("");
+    const handleRegister = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
 
-    if (password.length < 6) {
-      setPassError("Password must be at least 6 characters.");
-      return;
-    }
-    if (!/[A-Z]/.test(password) || !/[a-z]/.test(password)) {
-      setPassError(
-        "Must contain at least one uppercase and one lowercase letter.",
-      );
-      return;
-    }
+        const formData = new FormData(e.currentTarget);
+        const registerData = Object.fromEntries(formData.entries());
+        const password = registerData.password;
 
-    try {
-    
-      await authClient.signUp.email({
-        email,
-        password,
-        name,
-      });
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const isLongEnough = password.length >= 6;
 
-      Swal.fire({
-        icon: "success",
-        title: "Account Created Successfully! 🎉",
-        text: "Please log in now.",
-        confirmButtonColor: "#0d9488",
-      });
+        if (!hasUpperCase) {
+            toast.error("Password must contain at least one uppercase letter.");
+            setIsLoading(false);
+            return;
+        }
+        if (!hasLowerCase) {
+            toast.error("Password must contain at least one lowercase letter.");
+            setIsLoading(false);
+            return;
+        }
+        if (!isLongEnough) {
+            toast.error("Password must be at least 6 characters long.");
+            setIsLoading(false);
+            return;
+        }
 
-      router.push("/login");
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Registration Failed",
-        text: error.message || "Something went wrong.",
-        confirmButtonColor: "#ef4444",
-      });
-    }
-  };
+        toast.success("Registration successful! Welcome to MediQueue.");
+        router.push("/");
+    };
 
+    // 🎯 গুগল লগইন ফাংশন
+    const handleGoogleAuth = async () => {
+        await signIn.social({
+            provider: "google",
+            callbackURL: "/",
+        });
+    };
 
-  const handleGoogleRegister = async () => {
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Registration Failed",
-        text: "Could not register with Google.",
-        confirmButtonColor: "#ef4444",
-      });
-    }
-  };
+    return (
+        <div className="min-h-[80vh] flex flex-col bg-slate-50 py-12">
+            <div className="grow flex items-center justify-center p-4">
+                <div className="w-full max-w-md">
+                    <div className="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-2xl space-y-8 relative overflow-hidden">
+                        
+                        {/* Decorative element */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-lg space-y-6">
-        <h2 className="text-3xl font-extrabold text-center text-slate-800">
-          Register Account
-        </h2>
+                        <div className="text-center space-y-2 relative">
+                            <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+                                Join <span className="text-blue-600">MediQueue</span>
+                            </h2>
+                            <p className="text-slate-500 font-medium">Create your account to start booking tutors</p>
+                        </div>
 
-        <form onSubmit={handleRegister} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-teal-500"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-teal-500"
-            required
-          />
-          <input
-            type="url"
-            name="photo"
-            placeholder="Photo URL"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-teal-500"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-teal-500"
-            required
-          />
-          {passError && (
-            <p className="text-red-500 text-xs font-semibold">{passError}</p>
-          )}
+                        <form className="space-y-6" onSubmit={handleRegister}>
+                            <div className="space-y-2">
+                                <label htmlFor="name" className="text-sm font-bold text-slate-700 ml-1">Full Name</label>
+                                <Input id="name" required placeholder="Enter your name" name="name" disabled={isLoading} startContent={<User className="w-5 h-5 text-slate-400" />} className="border-2 border-slate-200 hover:border-blue-600/50 focus-within:border-blue-600 transition-all duration-300 h-14 bg-white w-full rounded-2xl" />
+                            </div>
 
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-md transition"
-          >
-            Register
-          </button>
-        </form>
+                            <div className="space-y-2">
+                                <label htmlFor="email" className="text-sm font-bold text-slate-700 ml-1">Email Address</label>
+                                <Input id="email" required placeholder="Enter your email" type="email" name="email" disabled={isLoading} startContent={<Mail className="w-5 h-5 text-slate-400" />} className="border-2 border-slate-200 hover:border-blue-600/50 focus-within:border-blue-600 transition-all duration-300 h-14 bg-white w-full rounded-2xl" />
+                            </div>
 
-       
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Or</span>
-          </div>
+                            <div className="space-y-2">
+                                <label htmlFor="image" className="text-sm font-bold text-slate-700 ml-1">Profile Image URL</label>
+                                <Input id="image" required placeholder="https://images.unsplash.com/..." type="url" name="image" disabled={isLoading} startContent={<ImageIcon className="w-5 h-5 text-slate-400" />} className="border-2 border-slate-200 hover:border-blue-600/50 focus-within:border-blue-600 transition-all duration-300 h-14 bg-white w-full rounded-2xl" />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label htmlFor="password" className="text-sm font-bold text-slate-700 ml-1">Password</label>
+                                <Input id="password" required placeholder="••••••••" type="password" name="password" disabled={isLoading} startContent={<Lock className="w-5 h-5 text-slate-400" />} className="border-2 border-slate-200 hover:border-blue-600/50 focus-within:border-blue-600 transition-all duration-300 h-14 bg-white w-full rounded-2xl" />
+                            </div>
+
+                            <Button color="primary" type="submit" disabled={isLoading} className="w-full h-14 text-lg font-black rounded-2xl shadow-xl shadow-blue-600/20 group">
+                                {isLoading ? <span className="flex items-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Moving to Home...</span> : <span className="flex items-center justify-center w-full">Register <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" /></span>}
+                            </Button>
+                        </form>
+
+                        {/* 🎯 Google বাটন: আগের ডিজাইনের সাথে মানানসই */}
+                        <Button 
+                            variant="flat" 
+                            className="w-full h-14 text-lg font-bold rounded-2xl border-2 border-slate-200 hover:border-blue-600 transition-all"
+                            onClick={handleGoogleAuth}
+                        >
+                            Continue with Google
+                        </Button>
+
+                        <div className="text-center pt-2">
+                            <p className="text-sm text-slate-500 font-medium">
+                                Already have an account?{' '}
+                                <Link href="/login" className="text-blue-600 font-black hover:underline underline-offset-4 transition-all">Sign in</Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <button
-          onClick={handleGoogleRegister}
-          className="w-full py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition flex items-center justify-center gap-2"
-        >
-          Register with Google
-        </button>
-
-        <p className="text-center text-sm text-slate-600">
-          Already have an account?{" "}
-          <Link href="/login" className="text-teal-600 font-bold underline">
-            Login
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export default RegisterPage;
+    );
+}

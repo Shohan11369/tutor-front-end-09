@@ -1,132 +1,47 @@
-export default function Features() {
-  return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition duration-300">
-      
-      {/* Why Choose Us */}
-      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12">
-          Why Choose Tutors-Finder?
-        </h2>
+import { Award, Clock, Users } from "lucide-react";
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-              Easy Booking
-            </h3>
-
-            <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">
-              Book tutors instantly with a smooth and simple interface.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md border-2 border-teal-500/20 dark:border-teal-500/40 relative transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-              Verified Tutors
-            </h3>
-
-            <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">
-              All tutors are verified to ensure quality education.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-              Flexible Scheduling
-            </h3>
-
-            <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">
-              Choose time slots that fit your daily routine.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-              Affordable Pricing
-            </h3>
-
-            <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">
-              Find tutors that match your budget easily.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-16 bg-white dark:bg-gray-900 border-y border-gray-100 dark:border-gray-700 transition">
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12">
-            How It Works
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <div className="p-6 border border-gray-100 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800 transition">
-              
-              <span className="text-2xl font-bold text-blue-600 block mb-3">
-                01
-              </span>
-
-              <h4 className="font-semibold text-base mb-1 text-gray-900 dark:text-white">
-                Search Tutor
-              </h4>
-
-              <p className="text-gray-500 dark:text-gray-300 text-xs">
-                Browse tutors by subject and availability.
-              </p>
+const Features = () => {
+    const featureItems = [
+        {
+            icon: Users,
+            title: 'Verified Medical Tutors',
+            desc: 'Learn from certified doctors, top-tier medical specialists, and senior medical students.',
+        },
+        {
+            icon: Award,
+            title: '1-on-1 Live Mentorship',
+            desc: 'Get personalized guidance, professional board exam prep, and real-time interactive lessons.',
+        },
+        {
+            icon: Clock,
+            title: 'Flexible Time Slots',
+            desc: 'Choose your own schedule and book available hours that perfectly fit your routine.',
+        },
+    ]
+    return (
+        <section className="py-24 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div className="space-y-4 mb-16">
+                    <h2 className="text-blue-600 font-bold uppercase tracking-widest text-sm">Our Benefits</h2>
+                    <h3 className="text-4xl font-extrabold text-slate-900">Why Choose MediQueue?</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    {featureItems.map((f, i) => (
+                        <div
+                            key={i}
+                            className="group p-8 bg-white border border-slate-200 rounded-3xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center space-y-6"
+                        >
+                            <div className="mx-auto w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all text-blue-600">
+                                <f.icon className="w-8 h-8" />
+                            </div>
+                            <h4 className="text-xl font-bold text-slate-900">{f.title}</h4>
+                            <p className="text-slate-500 leading-relaxed">{f.desc}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
+        </section>
+    );
+};
 
-            <div className="p-6 border border-gray-100 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800 transition">
-              
-              <span className="text-2xl font-bold text-blue-600 block mb-3">
-                02
-              </span>
-
-              <h4 className="font-semibold text-base mb-1 text-gray-900 dark:text-white">
-                Select Slot
-              </h4>
-
-              <p className="text-gray-500 dark:text-gray-300 text-xs">
-                Choose your preferred date and time.
-              </p>
-            </div>
-
-            <div className="p-6 border border-gray-100 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800 transition">
-              
-              <span className="text-2xl font-bold text-blue-600 block mb-3">
-                03
-              </span>
-
-              <h4 className="font-semibold text-base mb-1 text-gray-900 dark:text-white">
-                Book Session
-              </h4>
-
-              <p className="text-gray-500 dark:text-gray-300 text-xs">
-                Confirm booking with one click.
-              </p>
-            </div>
-
-            <div className="p-6 border border-gray-100 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800 transition">
-              
-              <span className="text-2xl font-bold text-blue-600 block mb-3">
-                04
-              </span>
-
-              <h4 className="font-semibold text-base mb-1 text-gray-900 dark:text-white">
-                Start Learning
-              </h4>
-
-              <p className="text-gray-500 dark:text-gray-300 text-xs">
-                Join your session and begin learning.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
+export default Features;

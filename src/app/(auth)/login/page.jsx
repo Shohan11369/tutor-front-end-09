@@ -1,147 +1,166 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
+import { Button, Input } from '@heroui/react';
+import Link from 'next/link';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { signIn } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast'; 
 
-import Link from "next/link";
+export default function Login() {
+    const router = useRouter();
 
-import Swal from "sweetalert2";
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
-import { authClient } from "@/lib/auth-client"; 
+        const formData = new FormData(e.currentTarget);
+        const loginData = Object.fromEntries(formData.entries());
 
-const LoginPage = () => {
-  const router = useRouter();
+        const { data, error } = await signIn.email({
+            ...loginData,
+            callbackURL: "/"
+        });
 
-  // email
+        if (error) {
+            toast.error(error.message || "Login failed. Please check your credentials.");
+            return;
+        }
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+        toast.success("Successfully logged in!");
+        router.push("/");
+    };
 
-    const email = e.target.email.value;
+    const handleGoogleLogin = async () => {
+        const { data, error } = await signIn.social({
+            provider: "google",
+            callbackURL: "/"
+        });
 
-    const password = e.target.password.value;
+        if (error) {
+            toast.error("Google authentication failed.");
+            return;
+        }
+        
+        toast.success("Successfully logged in with Google!");
+    };
 
-    try {
-      const { data, error } = await authClient.signIn.email({
-        email,
+    return (
+        <div className="min-h-[80vh] flex flex-col bg-slate-50">
+            <div className="flex items-center justify-center p-4">
+                <div className="w-full max-w-md">
+                    <div className="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-2xl space-y-8 relative overflow-hidden">
+                        {/* Decorative element */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
 
-        password,
-      });
+                        <div className="text-center space-y-2 relative">
+                            <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+                                Welcome <span className="text-blue-600">Back</span>
+                            </h2>
+                            <p className="text-slate-500 font-medium">Continue your MediQueue journey today</p>
+                        </div>
 
-      if (error) {
-        throw new Error(error.message || "Invalid Credentials");
-      }
+                        {/* Email Form */}
+                        <form
+                            onSubmit={handleLogin}
+                            className="space-y-6"
+                        >
+                            <div className="space-y-2">
+                                <label
+                                    htmlFor="email"
+                                    className="text-sm font-bold text-slate-700 ml-1"
+                                >
+                                    Email Address
+                                </label>
+                                <Input
+                                    id="email"
+                                    required
+                                    placeholder="Enter your email"
+                                    type="email"
+                                    name="email"
+                                    startContent={<Mail className="w-5 h-5 text-slate-400" />}
+                                    className="border-2 border-slate-200 hover:border-blue-600/50 focus-within:border-blue-600 transition-all duration-300 h-14 bg-white w-full rounded-2xl"
+                                />
+                            </div>
 
-      Swal.fire({
-        icon: "success",
+                            <div className="space-y-2">
+                                <label
+                                    htmlFor="password"
+                                    className="text-sm font-bold text-slate-700 ml-1"
+                                >
+                                    Password
+                                </label>
+                                <Input
+                                    id="password"
+                                    required
+                                    placeholder="••••••••"
+                                    type="password"
+                                    name="password"
+                                    startContent={<Lock className="w-5 h-5 text-slate-400" />}
+                                    className="border-2 border-slate-200 hover:border-blue-600/50 focus-within:border-blue-600 transition-all duration-300 h-14 bg-white w-full rounded-2xl"
+                                />
+                            </div>
+                            
+                            <div className="flex justify-end">
+                                <Link
+                                    href="#"
+                                    className="text-sm font-bold text-blue-600 hover:underline underline-offset-4 transition-all"
+                                >
+                                    Forgot password?
+                                </Link>
+                            </div>
 
-        title: "Login Successful! 🚀",
+                            <Button
+                                color="primary"
+                                type="submit"
+                                className="w-full h-14 text-lg font-black rounded-2xl shadow-xl shadow-blue-600/20 group"
+                            >
+                                Sign In <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                        </form>
 
-        confirmButtonColor: "#0d9488",
-      });
+                        {/* Divider */}
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-slate-100"></span>
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-white px-4 text-slate-400 font-bold tracking-widest">Or with social</span>
+                            </div>
+                        </div>
 
-      router.push("/");
-    } catch (err) {
-      Swal.fire({
-        icon: "error",
+                        {/* Google Sign In Section (Moved Below) */}
+                        <div className="space-y-4">
+                            <Button
+                                onClick={handleGoogleLogin}
+                                variant="bordered"
+                                className="w-full h-12 font-bold rounded-2xl border-slate-200 hover:bg-slate-50 transition-colors gap-3"
+                            >
+                                <Image
+                                    width={20}
+                                    height={20}
+                                    src="https://www.google.com/favicon.ico"
+                                    className="w-5 h-5"
+                                    alt="Google"
+                                />
+                                Sign in with Google
+                            </Button>
+                        </div>
 
-        title: "Login Failed",
-
-        text: err.message,
-
-        confirmButtonColor: "#ef4444",
-      });
-    }
-  };
-
-  // google
-
-  const handleGoogleLogin = async () => {
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-
-        callbackURL: "/",
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-
-        title: "Google Login Failed",
-
-        text: error.message,
-      });
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-gray-900 py-12 px-4 transition-colors">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-lg space-y-6">
-        <h2 className="text-3xl font-extrabold text-center text-slate-800 dark:text-white">
-          Account Login
-        </h2>
-
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            required
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            required
-          />
-
-          <div className="text-right">
-            <Link
-              href="/forgot-password"
-              className="text-sm text-teal-600 hover:underline"
-            >
-              Forgot Password?
-            </Link>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-md transition"
-          >
-            Login
-          </button>
-        </form>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-gray-800 text-gray-500">
-              Or continue with
-            </span>
-          </div>
+                        <div className="text-center pt-2">
+                            <p className="text-sm text-slate-500 font-medium">
+                                New to MediQueue?{' '}
+                                <Link
+                                    href="/register"
+                                    className="text-blue-600 font-black hover:underline underline-offset-4 transition-all"
+                                >
+                                    Create an account
+                                </Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition flex items-center justify-center gap-2 dark:text-white"
-        >
-          Continue with Google
-        </button>
-
-        <p className="text-center text-sm text-slate-600 dark:text-gray-400">
-          Don't have an account?{" "}
-          <Link href="/register" className="text-teal-600 font-bold underline">
-            Register
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export default LoginPage;
+    );
+}

@@ -7,7 +7,7 @@ export default function TutorsSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // ব্যাকএন্ড পোর্ট ৮০৮০ থেকে $limit অপারেটর অনুযায়ী টপ ৬টি টিউটর ডাটা নিয়ে আসা হচ্ছে
+    
     fetch("http://localhost:8080/tutors?limit=6") 
       .then((res) => res.json())
       .then((data) => {
