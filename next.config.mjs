@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', // যেকোনো ডোমেইন থেকে ছবি লোড করার জন্য
+      },
+    ],
+  },
 };
 
-export default nextConfig;
+export default nextConfig; // এখানে module.exports এর পরিবর্তে export default ব্যবহার করুন
