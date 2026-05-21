@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { GraduationCap, Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
+import {
+  GraduationCap,
+  Menu,
+  X,
+  User,
+  LogOut,
+  LayoutDashboard,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import Image from "next/image";
@@ -26,12 +33,15 @@ export function MainNavbar() {
   };
 
   return (
-    <nav className={`sticky top-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-2" : "bg-slate-50 py-4"
-    }`}>
+    <nav
+      className={`sticky top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white/90 backdrop-blur-md shadow-sm py-2"
+          : "bg-slate-50 py-4"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          
           {/* Logo Section */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2 group">
@@ -44,30 +54,57 @@ export function MainNavbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation Links */}
+    
           <div className="hidden md:flex gap-6 items-center">
-            <Link href="/" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</Link>
-            <Link href="/tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Tutors</Link>
+            <Link
+              href="/"
+              className="font-medium text-slate-700 hover:text-blue-600 transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              href="/tutor"
+              className="font-medium text-slate-700 hover:text-blue-600 transition-colors"
+            >
+              Tutors
+            </Link>
+
             
-            {/* লগইন করার পর শর্তাধীন লিঙ্কসমূহ */}
             {!isPending && session && (
               <>
-                <Link href="/add-tutor" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Add Tutor</Link>
-                <Link href="/my-tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">My Tutors</Link>
-                <Link href="/booked-sessions" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">My Booked Sessions</Link>
+                <Link
+                  href="/add-tutor"
+                  className="font-medium text-slate-700 hover:text-blue-600 transition-colors"
+                >
+                  Add Tutor
+                </Link>
+                <Link
+                  href="/my-tutors"
+                  className="font-medium text-slate-700 hover:text-blue-600 transition-colors"
+                >
+                  My Tutors
+                </Link>
+                <Link
+                  href="/booked-sessions"
+                  className="font-medium text-slate-700 hover:text-blue-600 transition-colors"
+                >
+                  My Booked Sessions
+                </Link>
               </>
             )}
           </div>
 
           {/* User Profile / Auth Actions */}
           <div className="hidden md:flex items-center gap-4">
-            {!isPending && !session ? (
+            {isPending ? (
+              <div className="w-20 h-8 bg-slate-200 animate-pulse rounded-full" />
+            ) : !session ? (
               <>
-                <Link href="/login" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Login</Link>
+                <Link href="/login" className="btn">
+                  Login
+                </Link>
                 <Link href="/register">
-                  <Button color="primary" className="font-bold rounded-full px-8 shadow-lg shadow-blue-600/20">
-                    Register
-                  </Button>
+                  <Button color="primary">Register</Button>
                 </Link>
               </>
             ) : (
@@ -76,26 +113,36 @@ export function MainNavbar() {
                   <Image
                     width={40}
                     height={40}
-                    src={session?.user?.image || "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=400"}
+                    src={session?.user?.image}
                     alt="avatar"
                     className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-600/10"
                   />
                   <div className="text-left hidden lg:block">
-                    <p className="text-sm font-bold truncate max-w-[100px]">{session?.user?.name}</p>
+                    <p className="text-sm font-bold truncate max-w-[100px]">
+                      {session?.user?.name}
+                    </p>
                     <p className="text-[10px] text-slate-500">Student</p>
                   </div>
                 </button>
-                
+
                 {/* Dropdown Menu */}
                 <div className="absolute right-0 top-12 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl flex-col py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible flex transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
                   <div className="px-4 py-3 border-b border-slate-100">
                     <p className="font-bold text-sm">Welcome back!</p>
-                    <p className="text-xs truncate text-slate-500">{session?.user?.email}</p>
+                    <p className="text-xs truncate text-slate-500">
+                      {session?.user?.email}
+                    </p>
                   </div>
-                  <Link href="/dashboard" className="px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-3 transition-colors text-slate-700">
+                  <Link
+                    href="/dashboard"
+                    className="px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-3 transition-colors text-slate-700"
+                  >
                     <LayoutDashboard className="w-4 h-4" /> Dashboard
                   </Link>
-                  <Link href="/settings" className="px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-3 transition-colors text-slate-700">
+                  <Link
+                    href="/settings"
+                    className="px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-3 transition-colors text-slate-700"
+                  >
                     <User className="w-4 h-4" /> Profile Settings
                   </Link>
                   <button
@@ -111,8 +158,15 @@ export function MainNavbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-lg hover:bg-slate-100 transition-colors">
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            >
+              {isMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -121,32 +175,86 @@ export function MainNavbar() {
       {/* Mobile Responsive Menu */}
       {isMenuOpen && (
         <div className="md:hidden px-4 pt-2 pb-6 space-y-2 bg-white border-b border-slate-200 transition-all">
-          <Link href="/" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Home</Link>
-          <Link href="/tutors" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Tutors</Link>
-          
+          <Link
+            href="/"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
+          >
+            Home
+          </Link>
+          <Link
+            href="/tutors"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
+          >
+            Tutors
+          </Link>
+
           {!isPending && session && (
             <>
-              <Link href="/add-tutor" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Add Tutor</Link>
-              <Link href="/my-tutors" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">My Tutors</Link>
-              <Link href="/booked-sessions" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">My Booked Sessions</Link>
+              <Link
+                href="/add-tutor"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
+              >
+                Add Tutor
+              </Link>
+              <Link
+                href="/my-tutors"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
+              >
+                My Tutors
+              </Link>
+              <Link
+                href="/booked-sessions"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
+              >
+                My Booked Sessions
+              </Link>
             </>
           )}
-          
+
           <div className="pt-4 border-t border-slate-100 mt-4">
             {!session ? (
               <div className="grid grid-cols-2 gap-4">
                 <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="bordered" className="rounded-xl w-full font-medium">Login</Button>
+                  <Button
+                    variant="bordered"
+                    className="rounded-xl w-full font-medium"
+                  >
+                    Login
+                  </Button>
                 </Link>
                 <Link href="/register" onClick={() => setIsMenuOpen(false)}>
-                  <Button color="primary" className="rounded-xl w-full font-bold">Register</Button>
+                  <Button
+                    color="primary"
+                    className="rounded-xl w-full font-bold"
+                  >
+                    Register
+                  </Button>
                 </Link>
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Account</p>
-                <Link href="/dashboard" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Dashboard</Link>
-                <Link href="/settings" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Profile Settings</Link>
+                <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  Account
+                </p>
+                <Link
+                  href="/dashboard"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/settings"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
+                >
+                  Profile Settings
+                </Link>
                 <button
                   onClick={() => {
                     handleLogOut();

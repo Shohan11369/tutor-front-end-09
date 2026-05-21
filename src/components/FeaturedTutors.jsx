@@ -10,7 +10,8 @@ const FeaturedTutors = async () => {
     // console.log("Fetched Tutors:", tutors);
     console.log("Component rendering..."); 
     const tutors = await fetchFeaturedTutors();
-    console.log("Fetched Tutors:", tutors);
+    console.log("Raw Data from Backend:", tutors);
+    
 
     return (
         <section className="py-24 bg-slate-50">
@@ -24,7 +25,7 @@ const FeaturedTutors = async () => {
                         </p>
                     </div>
                     
-                    <Link href="/tutors">
+                    <Link href="/tutor">
                         <Button
                             variant="flat"
                             color="primary"
