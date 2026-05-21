@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { Calendar, DollarSign, Users, MapPin, Award } from "lucide-react";
 import { Button } from "@heroui/react";
 import { useSession, authClient } from "@/lib/auth-client";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function TutorDetailsPage() {
   const { id } = useParams();
@@ -13,6 +15,8 @@ export default function TutorDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+
   const [showModal, setShowModal] = useState(false);
   const [confirmNumber, setConfirmNumber] = useState("");
 
@@ -20,7 +24,7 @@ export default function TutorDetailsPage() {
     if (isPending) return;
 
     if (!session) {
-      setError("ডেটা লোড করতে সমস্যা হচ্ছে। নিশ্চিত করুন আপনি লগইন করেছেন।");
+      toast.error("Failed to load data. Please make sure you are logged in.");
       setLoading(false);
       return;
     }
@@ -31,19 +35,16 @@ export default function TutorDetailsPage() {
 
         const token = session?.token;
 
-        const res = await axios.get(
-          `http://localhost:8080/tutors/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await axios.get(`http://localhost:8080/tutors/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setTutor(res.data);
       } catch (err) {
         console.error("Error fetching tutor:", err);
-        setError("টিউটরের তথ্য আনতে ব্যর্থ হয়েছে।");
+        toast.error("Failed to fetch tutor data.");
       } finally {
         setLoading(false);
       }
@@ -52,17 +53,16 @@ export default function TutorDetailsPage() {
     if (id) fetchTutor();
   }, [id, session, isPending]);
 
-  // =======================
-  // 🔥 FIXED BOOK FUNCTION
-  // =======================
+  //FIXED BOOK FUNCTION
+
   const handleBookSession = async () => {
     if (!session?.user) {
-      alert("বুকিং করার জন্য দয়া করে লগইন করুন।");
+      toast.error("Please login to book a session.");
       return;
     }
 
     if (!confirmNumber) {
-      alert("Please enter confirmation number");
+      toast.error("Please enter confirmation number.");
       return;
     }
 
@@ -71,7 +71,7 @@ export default function TutorDetailsPage() {
       const token = tokenRes?.data?.token;
 
       if (!token) {
-        alert("Token missing, login again");
+        toast.error("Session expired. Please login again.");
         return;
       }
 
@@ -87,18 +87,14 @@ export default function TutorDetailsPage() {
         confirmNumber: confirmNumber,
       };
 
-      // 🔥 FIXED ROUTE (NO /bookings)
-      await axios.patch(
-        `http://localhost:8080/tutors/${id}`,
-        bookingInfo,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      //FIXED ROUTE (NO /bookings)
+      await axios.patch(`http://localhost:8080/tutors/${id}`, bookingInfo, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      alert("সফলভাবে বুক করা হয়েছে!");
+      toast.success("Session booked successfully!");
       setTutor((prev) => ({
         ...prev,
         totalSlot: prev.totalSlot - 1,
@@ -107,9 +103,60 @@ export default function TutorDetailsPage() {
       window.location.reload();
     } catch (err) {
       console.error("Booking error:", err);
-      alert("বুকিং করতে সমস্যা হয়েছে।");
+      toast.error("No slot available");
     }
   };
+
+//   const handleBookSession = async () => {
+//   if (!session?.user) {
+//     toast.error("Please login to book a session.");
+//     return false;
+//   }
+
+//   if (!confirmNumber) {
+//     toast.error("Please enter confirmation number.");
+//     return false;
+//   }
+
+//   try {
+//     const tokenRes = await authClient.token();
+//     const token = tokenRes?.data?.token;
+
+//     if (!token) {
+//       toast.error("Session expired. Please login again.");
+//       return false;
+//     }
+
+//     const bookingInfo = {
+//       studentName: session.user.name,
+//       studentEmail: session.user.email,
+//       tutorName: tutor.tutorName,
+//       tutorPhoto: tutor.image,
+//       subject: tutor.subject,
+//       hourlyFee: tutor.hourlyFee,
+//       confirmNumber: confirmNumber,
+//     };
+
+//     await axios.patch(`http://localhost:8080/tutors/${id}`, bookingInfo, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+
+//     toast.success("Session booked successfully!");
+
+//     setTutor((prev) => ({
+//       ...prev,
+//       totalSlot: prev.totalSlot - 1,
+//     }));
+
+//     return true; // 🔥 MUST
+//   } catch (err) {
+//     console.error("Booking error:", err);
+//     toast.error("No slot available");
+//     return false;
+//   }
+// };
 
   if (isPending || loading)
     return (
@@ -133,7 +180,6 @@ export default function TutorDetailsPage() {
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4">
       <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-2xl">
-
         <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
           <img
             src={tutor.image || "/default-avatar.png"}
@@ -188,9 +234,7 @@ export default function TutorDetailsPage() {
             color="primary"
             className="h-14 px-10 text-lg font-black rounded-2xl shadow-xl shadow-blue-600/20"
           >
-            {tutor.totalSlot > 0
-              ? "Book Session Now"
-              : "No Slots Available"}
+            {tutor.totalSlot > 0 ? "Book Session Now" : "No Slots Available"}
           </Button>
         </div>
       </div>
@@ -199,10 +243,7 @@ export default function TutorDetailsPage() {
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-2xl w-[400px]">
-
-            <h2 className="text-xl font-bold mb-4">
-              Confirm Booking
-            </h2>
+            <h2 className="text-xl font-bold mb-4">Confirm Booking</h2>
 
             <input
               type="number"
@@ -225,13 +266,14 @@ export default function TutorDetailsPage() {
                   await handleBookSession();
                   setShowModal(false);
                   setConfirmNumber("");
+                  router.push("/tutor");
                 }}
                 className="w-1/2 bg-blue-600 text-white p-2 rounded"
               >
                 Confirm
               </button>
+   
             </div>
-
           </div>
         </div>
       )}

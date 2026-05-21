@@ -4,7 +4,7 @@ import axios from "axios";
 import { AuthContext } from "@/context/AuthContext";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react"; // লোডিং স্পিনারের জন্য
+import { Loader2 } from "lucide-react"; 
 
 export default function TutorsPage() {
     const [tutors, setTutors] = useState([]);
@@ -31,7 +31,7 @@ export default function TutorsPage() {
     };
 
     useEffect(() => {
-        const timer = setTimeout(fetchTutors, 500); // Debounce delay
+        const timer = setTimeout(fetchTutors, 500); 
         return () => clearTimeout(timer);
     }, [search, startDate, endDate]);
 
@@ -48,7 +48,7 @@ export default function TutorsPage() {
             return;
         }
 
-        // বুকিং লজিক বা ডিটেইলস পেজে রিডাইরেক্ট
+      
         router.push(`/tutors/${tutor._id}`);
     };
 

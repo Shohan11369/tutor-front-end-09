@@ -1,72 +1,239 @@
 "use client";
-import { useForm } from "react-hook-form";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { toast } from "react-hot-toast";
-import { useSession } from "@/lib/auth-client"; // Better Auth ব্যবহার করছি
+
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { useState } from "react";
 
-const AddTutorPage = () => {
-    const { register, handleSubmit, reset } = useForm();
-    const axiosSecure = useAxiosSecure();
-    const { data: session, isPending } = useSession();
-    const router = useRouter();
+export default function AddTutorPage() {
+  const router = useRouter();
 
-    // নিরাপত্তা চেক: যদি ইউজার টিউটর না হয়, তবে তাকে সরিয়ে দাও
-    useEffect(() => {
-        if (!isPending && (!session || session.user.role !== 'tutor')) {
-            toast.error("You are not authorized to access this page!");
-            router.push("/");
-        }
-    }, [session, isPending, router]);
+  const [form, setForm] = useState({
+    tutorName: "",
+    image: "",
+    subject: "",
+    availableDays: "",
+    availableTimeSlot: "",
+    hourlyFee: "",
+    totalSlot: "",
+    sessionStartDate: "",
+    institution: "",
+    experience: "",
+    location: "",
+    teachingMode: "Online",
+  });
 
-    const onSubmit = async (data) => {
-        const tutorData = {
-            ...data,
-            email: session?.user?.email, // সেশন থেকে ইমেইল
-            fee: parseFloat(data.fee),
-            totalSlot: parseInt(data.totalSlot)
-        };
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-        try {
-            const res = await axiosSecure.post('/tutors', tutorData);
-            if (res.data.insertedId) {
-                toast.success("Tutor profile created successfully!");
-                reset();
-            }
-        } catch (error) {
-            toast.error("Failed to add tutor profile. Please try again.");
-        }
-    };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    if (isPending) return <div className="text-center mt-20">Loading...</div>;
+  //   try {
+  //     await axios.post("http://localhost:8080/tutors", {
+  //       ...form,
+  //       hourlyFee: Number(form.hourlyFee),
+  //       totalSlot: Number(form.totalSlot),
+  //     });
 
-    return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-xl rounded-[2rem] border border-slate-100 mt-10">
-            <h2 className="text-3xl font-black mb-6 text-center text-slate-900">Add Your Tutor Profile</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input {...register("name")} placeholder="Tutor Name" className="input input-bordered w-full rounded-xl" required />
-                <input {...register("photo")} placeholder="Photo URL" className="input input-bordered w-full rounded-xl" required />
-                
-                <select {...register("subject")} className="select select-bordered w-full rounded-xl">
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Physics">Physics</option>
-                    <option value="Chemistry">Chemistry</option>
-                    <option value="Biology">Biology</option>
-                </select>
+  //     toast.success("Tutor added successfully!");
 
-                <input {...register("time")} placeholder="Available Time (e.g. 5pm-8pm)" className="input input-bordered w-full rounded-xl" />
-                <input {...register("fee")} type="number" placeholder="Hourly Fee" className="input input-bordered w-full rounded-xl" />
-                <input {...register("totalSlot")} type="number" placeholder="Total Slot" className="input input-bordered w-full rounded-xl" />
-                <input {...register("date")} type="date" className="input input-bordered w-full rounded-xl" />
-                <input {...register("location")} placeholder="Location" className="input input-bordered w-full rounded-xl" />
-                
-                <button type="submit" className="btn btn-primary md:col-span-2 rounded-xl text-white font-bold h-12 shadow-lg">
-                    Submit Profile
-                </button>
-            </form>
-        </div>
-    );
+  //     setForm({
+  //       tutorName: "",
+  //       image: "",
+  //       subject: "",
+  //       availableDays: "",
+  //       availableTimeSlot: "",
+  //       hourlyFee: "",
+  //       totalSlot: "",
+  //       sessionStartDate: "",
+  //       institution: "",
+  //       experience: "",
+  //       location: "",
+  //       teachingMode: "Online",
+  //     });
+
+  //     setTimeout(() => {
+  //       router.push("/tutors");
+  //     }, 500);
+
+  //   } catch (err) {
+  //     console.log(err);
+  //     toast.error("Failed to add tutor");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // validation
+  if (
+    !form.tutorName ||
+    !form.image ||
+    !form.subject ||
+    !form.availableDays ||
+    !form.availableTimeSlot ||
+    !form.hourlyFee ||
+    !form.totalSlot ||
+    !form.sessionStartDate ||
+    !form.institution ||
+    !form.experience ||
+    !form.location
+  ) {
+    toast.error("Please fill all fields");
+    return;
+  }
+
+  try {
+    await axios.post("http://localhost:8080/tutors", {
+      ...form,
+      hourlyFee: Number(form.hourlyFee),
+      totalSlot: Number(form.totalSlot),
+    });
+
+    toast.success("Tutor added successfully!");
+
+    setForm({
+      tutorName: "",
+      image: "",
+      subject: "",
+      availableDays: "",
+      availableTimeSlot: "",
+      hourlyFee: "",
+      totalSlot: "",
+      sessionStartDate: "",
+      institution: "",
+      experience: "",
+      location: "",
+      teachingMode: "Online",
+    });
+
+    setTimeout(() => {
+      router.push("/tutor");
+    }, 500);
+
+  } catch (err) {
+    console.log(err);
+    toast.error("Failed to add tutor");
+  }
 };
 
-export default AddTutorPage;
+  return (
+    <div className="container mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Add Tutor</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-3">
+
+        <input
+          name="tutorName"
+          onChange={handleChange}
+          value={form.tutorName}
+          placeholder="Tutor Name"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="image"
+          onChange={handleChange}
+          value={form.image}
+          placeholder="Image URL"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="subject"
+          onChange={handleChange}
+          value={form.subject}
+          placeholder="Subject"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="availableDays"
+          onChange={handleChange}
+          value={form.availableDays}
+          placeholder="Available Days"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="availableTimeSlot"
+          onChange={handleChange}
+          value={form.availableTimeSlot}
+          placeholder="Time Slot"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="hourlyFee"
+          type="number"
+          onChange={handleChange}
+          value={form.hourlyFee}
+          placeholder="Fee"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="totalSlot"
+          type="number"
+          onChange={handleChange}
+          value={form.totalSlot}
+          placeholder="Total Slot"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="sessionStartDate"
+          type="date"
+          onChange={handleChange}
+          value={form.sessionStartDate}
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="institution"
+          onChange={handleChange}
+          value={form.institution}
+          placeholder="Institution"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="experience"
+          onChange={handleChange}
+          value={form.experience}
+          placeholder="Experience"
+          className="border p-2 w-full"
+        />
+
+        <input
+          name="location"
+          onChange={handleChange}
+          value={form.location}
+          placeholder="Location"
+          className="border p-2 w-full"
+        />
+
+        <select
+          name="teachingMode"
+          onChange={handleChange}
+          value={form.teachingMode}
+          className="border p-2 w-full"
+        >
+          <option value="Online">Online</option>
+          <option value="Offline">Offline</option>
+          <option value="Both">Both</option>
+        </select>
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Add Tutor
+        </button>
+
+      </form>
+    </div>
+  );
+}

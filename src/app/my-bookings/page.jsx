@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-hot-toast";
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -44,10 +45,10 @@ const BookingsPage = () => {
 
       setBookings((prev) => prev.filter((b) => b._id !== id));
 
-      alert("Booking cancelled");
+      toast.success("Booking cancelled successfully");
     } catch (error) {
       console.log(error);
-      alert("Cancel failed");
+       toast.error("Failed to cancel booking");
     }
   };
 
