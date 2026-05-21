@@ -21,7 +21,7 @@ export default function TutorDetailsPage() {
     const fetchTutor = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/tutors/${id}`
+          `https://tutor-server-09.vercel.app/tutors/${id}`
         );
 
         setTutor(res.data);
@@ -73,7 +73,7 @@ export default function TutorDetailsPage() {
       };
 
       const res = await axios.patch(
-        `http://localhost:8080/tutors/${id}`,
+        `https://tutor-server-09.vercel.app/tutors/${id}`,
         bookingData,
         {
           headers: {

@@ -1,6 +1,6 @@
 export const fetchFeaturedTutors = async () => {
   try {
-    const res = await fetch("http://localhost:8080/featured-tutors", { cache: 'no-store' });
+    const res = await fetch("https://tutor-server-09.vercel.app/featured-tutors", { cache: 'no-store' });
     if (!res.ok) return [];
     const data = await res.json();
     return data || [];

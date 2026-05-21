@@ -19,7 +19,7 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  // ড্যাশবোর্ডের জন্য বুকিং করা টিউটরদের ডেটা ফেচ করা হচ্ছে
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/bookings/${session?.user?.id}`,
     {

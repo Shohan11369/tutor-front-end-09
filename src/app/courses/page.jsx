@@ -7,7 +7,6 @@ import { GraduationCap, Filter } from "lucide-react";
 const TutorsPage = async ({ searchParams }) => {
     const sParams = await searchParams;
 
-    // সার্চ টার্ম ও ফিল্টার প্যারামিটার ডেটা ফেচিং ফাংশনে পাঠানো হচ্ছে
     const tutors = await fetchTutors(sParams?.searchTerm || "");
 
     return (
@@ -30,7 +29,7 @@ const TutorsPage = async ({ searchParams }) => {
                     </Button>
                 </div>
 
-                {/* রিকোয়ারমেন্ট অনুযায়ী ৩-কলাম গ্রিড লেআউট */}
+              
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {tutors && tutors.length > 0 ? (
                         tutors.map((tutor) => (

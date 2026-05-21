@@ -86,7 +86,7 @@ export default function AddTutorPage() {
   }
 
   try {
-    await axios.post("http://localhost:8080/tutors", {
+    await axios.post("https://tutor-server-09.vercel.app/tutors", {
       ...form,
       hourlyFee: Number(form.hourlyFee),
       totalSlot: Number(form.totalSlot),

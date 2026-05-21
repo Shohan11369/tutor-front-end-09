@@ -8,7 +8,7 @@ export default function TutorsSection() {
 
   useEffect(() => {
     
-    fetch("http://localhost:8080/tutors?limit=6") 
+    fetch("https://tutor-server-09.vercel.app/tutors?limit=6") 
       .then((res) => res.json())
       .then((data) => {
         setTutors(data);
