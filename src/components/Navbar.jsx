@@ -54,7 +54,6 @@ export function MainNavbar() {
             </Link>
           </div>
 
-    
           <div className="hidden md:flex gap-6 items-center">
             <Link
               href="/"
@@ -69,7 +68,6 @@ export function MainNavbar() {
               Tutors
             </Link>
 
-            
             {!isPending && session && (
               <>
                 <Link
@@ -85,7 +83,7 @@ export function MainNavbar() {
                   My Tutors
                 </Link>
                 <Link
-                  href="/booked-sessions"
+                  href="/my-bookings"
                   className="font-medium text-slate-700 hover:text-blue-600 transition-colors"
                 >
                   My Booked Sessions
@@ -207,7 +205,7 @@ export function MainNavbar() {
                 My Tutors
               </Link>
               <Link
-                href="/booked-sessions"
+                href="/my-bookings"
                 onClick={() => setIsMenuOpen(false)}
                 className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
               >

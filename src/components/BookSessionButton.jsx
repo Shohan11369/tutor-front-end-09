@@ -1,86 +1,124 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "next/navigation";
 import { useSession, authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Button } from "@heroui/react";
 
-export default function BookSessionButton({ tutor }) {
-    const { data: session } = useSession();
-    const router = useRouter();
+export default function TutorDetailsPage() {
+  const { id } = useParams();
+  const { data: session } = useSession();
 
-    const handleBooking = async () => {
-        // ১. ইউজার লগইন করা না থাকলে আটকে দেওয়া
-        if (!session?.user) {
-            toast.error("Please login first to book a session.");
-            router.push("/login");
-            return;
-        }
+  const [tutor, setTutor] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-        // ২. স্লট চেক করা (যদি ০ হয় তবে বুকিং করতে দেবে না)
-        if (tutor?.totalSlot <= 0) {
-            toast.error("Sorry, no available slots left for this tutor.");
-            return;
-        }
+  // =====================
+  // FETCH TUTOR
+  // =====================
+  useEffect(() => {
+    const fetchTutor = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/tutors/${id}`
+        );
 
-        // ৩. JWT টোকেন সংগ্রহ করা
-        const { data: jwtData } = await authClient.token();
-        const token = jwtData?.token;
-        if (!token) {
-            toast.error("Authentication failed. Please log in again.");
-            return;
-        }
-
-        // 🎯 অ্যাসাইনমেন্ট রিকোয়ারমেন্ট অনুযায়ী বুকিং অবজেক্ট তৈরি
-        const updatedBookingData = {
-            userId: session?.user?.id,
-            studentName: session?.user?.name,
-            studentEmail: session?.user?.email,
-            tutorId: tutor?._id,
-            tutorName: tutor?.name,
-            tutorPhoto: tutor?.photo,
-            subject: tutor?.subject,
-            hourlyFee: tutor?.hourlyFee
-        };
-
-        try {
-            // ৪. এপিআই রাউট আপডেট (enrollments থেকে bookings-এ রূপান্তর)
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${tutor?._id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(updatedBookingData)
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                toast.error(data?.message || "Booking failed. Please try again.");
-                return;
-            }
-
-            toast.success(`Successfully booked a session with ${tutor?.name}!`);
-            // সফল বুকিংয়ের পর সরাসরি ড্যাশবোর্ডে রিডাইরেক্ট
-            router.push("/dashboard");
-            router.refresh(); // ডাটা রিলোড করার জন্য
-
-        } catch (err) {
-            toast.error("Something went wrong with the booking request.");
-            console.error(err);
-        }
+        setTutor(res.data);
+      } catch (error) {
+        console.log(error);
+        toast.error("Tutor load failed");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    return (
-        <Button
-            color={tutor?.totalSlot <= 0 ? "default" : "primary"}
-            size="lg"
-            className="w-full font-bold shadow-lg mt-4 text-base"
-            onPress={handleBooking}
-            disabled={tutor?.totalSlot <= 0}
-        >
-            {tutor?.totalSlot <= 0 ? "Fully Booked" : "Book Session Now"}
-        </Button>
-    );
+    if (id) fetchTutor();
+  }, [id]);
+
+  // =====================
+  // BOOK SESSION
+  // =====================
+  const handleBookSession = async () => {
+    if (!session?.user) {
+      toast.error("Please login first");
+      return;
+    }
+
+    if (tutor?.totalSlot <= 0) {
+      toast.error("No slots available");
+      return;
+    }
+
+    try {
+      // 🔥 SAFE TOKEN GET
+      const tokenRes = await authClient.token();
+      const token = tokenRes?.data?.token;
+
+      if (!token) {
+        toast.error("Login again (token missing)");
+        return;
+      }
+
+      const bookingData = {
+        studentName: session.user.name,
+        studentEmail: session.user.email,
+
+        tutorName: tutor.tutorName,
+        tutorPhoto: tutor.image,
+        subject: tutor.subject,
+        hourlyFee: tutor.hourlyFee,
+
+        confirmNumber: Math.floor(100000 + Math.random() * 900000),
+      };
+
+      const res = await axios.patch(
+        `http://localhost:8080/tutors/${id}`,
+        bookingData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      toast.success("Booking successful!");
+
+      setTutor((prev) => ({
+        ...prev,
+        totalSlot: prev.totalSlot - 1,
+      }));
+    } catch (error) {
+      console.log(error);
+
+      toast.error(
+        error?.response?.data?.message || "Booking failed"
+      );
+    }
+  };
+
+  // =====================
+  // UI
+  // =====================
+  if (loading) return <p>Loading...</p>;
+  if (!tutor) return <p>Tutor not found</p>;
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold">{tutor.tutorName}</h1>
+      <p>{tutor.subject}</p>
+      <p>Slots: {tutor.totalSlot}</p>
+
+      <Button
+        onPress={handleBookSession}
+        disabled={tutor.totalSlot <= 0}
+        color="primary"
+      >
+        {tutor.totalSlot <= 0
+          ? "Fully Booked"
+          : "Book Session Now"}
+      </Button>
+    </div>
+  );
 }

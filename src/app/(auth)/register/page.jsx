@@ -21,9 +21,9 @@ export default function Register() {
         const email = formData.get("email");
         const image = formData.get("image");
         const password = formData.get("password");
-        const role = formData.get("role"); // ড্রপডাউন থেকে রোল নেওয়া হচ্ছে
+        const role = formData.get("role"); 
 
-        // পাসওয়ার্ড ভ্যালিডেশন
+       
         if (password.length < 6 || !/[A-Z]/.test(password) || !/[a-z]/.test(password)) {
             toast.error("Password must be at least 6 characters, with uppercase and lowercase letters.");
             setIsLoading(false);
@@ -36,7 +36,7 @@ export default function Register() {
                 password,
                 name,
                 image,
-                role, // ইউজার কোন রোলে রেজিস্টার করছে তা এখানে পাঠানো হচ্ছে
+                role, 
                 callbackURL: "/",
             });
 
