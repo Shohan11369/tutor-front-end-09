@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosSecure = axios.create({
-    baseURL: 'https://tutor-server-09.vercel.app', 
+    baseURL: `${process.env.NEXT_PUBLIC_API_URL}`, 
     withCredentials: true
 });
 

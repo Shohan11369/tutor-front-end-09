@@ -1,14 +1,19 @@
 "use client";
-
+// Modal সম্পর্কিত সব কম্পোনেন্ট এখান থেকে ইম্পোর্ট করুন
 import { 
   Modal, 
   ModalContent, 
   ModalHeader, 
   ModalBody, 
-  ModalFooter, 
-  Button, 
-  useDisclosure 
-} from "@heroui/react";
+  ModalFooter 
+} from "@heroui/modal";
+
+// Button এবং অন্যান্য সাধারণ কম্পোনেন্ট @heroui/react থেকে
+import { Button } from "@heroui/react";
+
+// হুকটি আলাদাভাবে
+import { useDisclosure } from "@heroui/use-disclosure";
+
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

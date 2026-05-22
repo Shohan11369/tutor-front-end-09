@@ -8,5 +8,5 @@ export const getAuthHeaders = async () => {
 };
 
 export const api = axios.create({
-  baseURL: 'https://tutor-server-09.vercel.app',
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
 });

@@ -35,7 +35,7 @@ export default function TutorDetailsPage() {
 
         const token = session?.token;
 
-        const res = await axios.get(`https://tutor-server-09.vercel.app/tutors/${id}`, {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +88,7 @@ export default function TutorDetailsPage() {
       };
 
       //FIXED ROUTE (NO /bookings)
-      await axios.patch(`https://tutor-server-09.vercel.app/tutors/${id}`, bookingInfo, {
+      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`, bookingInfo, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

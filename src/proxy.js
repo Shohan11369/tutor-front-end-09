@@ -17,4 +17,3 @@ export async function proxy(request) {
 export const config = {
   matcher: ['/courses/:id', '/dashboard/:path*', '/add-course'],
 };
-

@@ -17,7 +17,7 @@ const MyTutorsPage = () => {
       const tokenRes = await authClient.token();
       const token = tokenRes?.data?.token;
 
-      const res = await axios.get("https://tutor-server-09.vercel.app/bookings", {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -42,7 +42,7 @@ const MyTutorsPage = () => {
       const tokenRes = await authClient.token();
       const token = tokenRes?.data?.token;
 
-      await axios.delete(`https://tutor-server-09.vercel.app/bookings/${id}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

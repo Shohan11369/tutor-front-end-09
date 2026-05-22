@@ -1,13 +1,13 @@
 import TutorCard from "@/components/TutorCard";
 import TutorsHeader from "@/components/TutorsHeader";
-import { fetchTutors } from "@/lib/tutors/data";
+import { fetchFeaturedTutors } from "@/lib/tutors/data";
 import { Button } from "@heroui/react";
 import { GraduationCap, Filter } from "lucide-react";
 
 const TutorsPage = async ({ searchParams }) => {
     const sParams = await searchParams;
 
-    const tutors = await fetchTutors(sParams?.searchTerm || "");
+    const tutors = await fetchFeaturedTutors(sParams?.searchTerm || "");
 
     return (
         <div className="min-h-screen bg-slate-50">

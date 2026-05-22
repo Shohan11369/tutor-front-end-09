@@ -18,7 +18,7 @@ export default function TutorsPage() {
     const fetchTutors = async () => {
         setLoading(true);
         try {
-            const res = await axios.get(`https://tutor-server-09.vercel.app/tutors`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/tutors`, {
                 params: { search, startDate, endDate }
             });
             setTutors(res.data);
