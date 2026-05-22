@@ -31,7 +31,7 @@ export default function AddTutorPage() {
   //   e.preventDefault();
 
   //   try {
-  //     await axios.post("http://localhost:8080/tutors", {
+  //     await axios.post("http://localhost:8080/tutor", {
   //       ...form,
   //       hourlyFee: Number(form.hourlyFee),
   //       totalSlot: Number(form.totalSlot),
@@ -86,7 +86,7 @@ export default function AddTutorPage() {
   }
 
   try {
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/tutors`, {
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/tutor`, {
       ...form,
       hourlyFee: Number(form.hourlyFee),
       totalSlot: Number(form.totalSlot),
