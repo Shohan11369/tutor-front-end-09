@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function TutorsSection() {
-  const [tutors, setTutors] = useState([]);
+  const [tutor, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,13 +40,13 @@ export default function TutorsSection() {
         </p>
       </div>
 
-      {tutors.length === 0 ? (
+      {tutor.length === 0 ? (
         <div className="text-center bg-white dark:bg-[#111827] p-12 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm max-w-md mx-auto">
           <p className="text-gray-500 dark:text-gray-400">No active tutors found in the repository right now.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {tutors.map((tutor) => (
+          {tutor.map((tutor) => (
             <div 
               key={tutor._id} 
               className="bg-white dark:bg-[#111827] rounded-3xl shadow-md dark:shadow-xl border border-gray-100 dark:border-gray-800 p-6 flex flex-col justify-between transition hover:scale-[1.02] duration-300"
@@ -87,7 +87,7 @@ export default function TutorsSection() {
 
               {/* Redirection Button to Details Page */}
               <div className="mt-6">
-                <Link href={`/tutors/${tutor._id}`}>
+                <Link href={`/tutor/${tutor._id}`}>
                   <button className="w-full bg-[#00c49f] hover:bg-[#00b08f] text-white py-3 rounded-xl font-bold text-sm transition shadow-md tracking-wide">
                     Book Session
                   </button>

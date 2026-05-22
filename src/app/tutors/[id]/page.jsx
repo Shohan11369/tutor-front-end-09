@@ -35,7 +35,7 @@ const router = useRouter();
         const token = session?.token;
 
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/tutor/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -114,56 +114,6 @@ const router = useRouter();
     }
   };
 
-  //   const handleBookSession = async () => {
-  //   if (!session?.user) {
-  //     toast.error("Please login to book a session.");
-  //     return false;
-  //   }
-
-  //   if (!confirmNumber) {
-  //     toast.error("Please enter confirmation number.");
-  //     return false;
-  //   }
-
-  //   try {
-  //     const tokenRes = await authClient.token();
-  //     const token = tokenRes?.data?.token;
-
-  //     if (!token) {
-  //       toast.error("Session expired. Please login again.");
-  //       return false;
-  //     }
-
-  //     const bookingInfo = {
-  //       studentName: session.user.name,
-  //       studentEmail: session.user.email,
-  //       tutorName: tutor.tutorName,
-  //       tutorPhoto: tutor.image,
-  //       subject: tutor.subject,
-  //       hourlyFee: tutor.hourlyFee,
-  //       confirmNumber: confirmNumber,
-  //     };
-
-  //     await axios.patch(`http://localhost:8080/tutors/${id}`, bookingInfo, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-
-  //     toast.success("Session booked successfully!");
-
-  //     setTutor((prev) => ({
-  //       ...prev,
-  //       totalSlot: prev.totalSlot - 1,
-  //     }));
-
-  //     return true; // 🔥 MUST
-  //   } catch (err) {
-  //     console.error("Booking error:", err);
-  //     toast.error("No slot available");
-  //     return false;
-  //   }
-  // };
 
   if (isPending || loading)
     return (

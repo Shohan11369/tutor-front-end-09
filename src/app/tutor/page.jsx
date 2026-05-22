@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 export default function TutorsPage() {
-  const [tutors, setTutors] = useState([]);
+  const [tutor, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -18,7 +18,7 @@ export default function TutorsPage() {
   const fetchTutors = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/tutors`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/tutor`, {
         params: { search, startDate, endDate },
       });
       setTutors(res.data);
@@ -48,7 +48,7 @@ export default function TutorsPage() {
       return;
     }
 
-    router.push(`/tutors/${tutor._id}`);
+    router.push(`/tutor/${tutor._id}`);
   };
 
   return (
@@ -94,8 +94,8 @@ export default function TutorsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {tutors.length > 0 ? (
-            tutors.map((tutor) => (
+          {tutor.length > 0 ? (
+            tutor.map((tutor) => (
               <div
                 key={tutor._id}
                 className="border border-slate-100 p-5 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 bg-white"

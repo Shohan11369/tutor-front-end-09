@@ -21,7 +21,7 @@ export default function TutorDetailsPage() {
     const fetchTutor = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`
+          `${process.env.NEXT_PUBLIC_API_URL}/tutor/${id}`
         );
 
         setTutor(res.data);
@@ -73,7 +73,7 @@ export default function TutorDetailsPage() {
       };
 
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/tutor/${id}`,
         bookingData,
         {
           headers: {
