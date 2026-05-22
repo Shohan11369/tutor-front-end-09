@@ -181,7 +181,7 @@ export function MainNavbar() {
             Home
           </Link>
           <Link
-            href="/tutors"
+            href="/tutor"
             onClick={() => setIsMenuOpen(false)}
             className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl"
           >

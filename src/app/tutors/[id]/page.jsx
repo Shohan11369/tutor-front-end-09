@@ -14,7 +14,7 @@ export default function TutorDetailsPage() {
   const [tutor, setTutor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
   const [confirmNumber, setConfirmNumber] = useState("");
