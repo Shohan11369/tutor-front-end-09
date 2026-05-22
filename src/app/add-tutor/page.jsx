@@ -27,43 +27,6 @@ export default function AddTutorPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     await axios.post("http://localhost:8080/tutor", {
-  //       ...form,
-  //       hourlyFee: Number(form.hourlyFee),
-  //       totalSlot: Number(form.totalSlot),
-  //     });
-
-  //     toast.success("Tutor added successfully!");
-
-  //     setForm({
-  //       tutorName: "",
-  //       image: "",
-  //       subject: "",
-  //       availableDays: "",
-  //       availableTimeSlot: "",
-  //       hourlyFee: "",
-  //       totalSlot: "",
-  //       sessionStartDate: "",
-  //       institution: "",
-  //       experience: "",
-  //       location: "",
-  //       teachingMode: "Online",
-  //     });
-
-  //     setTimeout(() => {
-  //       router.push("/tutors");
-  //     }, 500);
-
-  //   } catch (err) {
-  //     console.log(err);
-  //     toast.error("Failed to add tutor");
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
   e.preventDefault();
 

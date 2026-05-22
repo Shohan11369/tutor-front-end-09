@@ -69,7 +69,7 @@ export default async function DashboardPage() {
           {bookings?.length === 0 ? (
             <div className="p-12 text-center bg-white border border-slate-200 rounded-3xl shadow-sm">
               <p className="mb-4 text-slate-500 font-medium">You haven't booked any tutor sessions yet.</p>
-              <Link href="/tutors">
+              <Link href="/tutor">
                 <Button color="primary" className="font-bold rounded-xl px-6">
                   Find a Tutor
                 </Button>
