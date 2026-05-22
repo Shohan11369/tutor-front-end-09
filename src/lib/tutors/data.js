@@ -11,6 +11,7 @@
 // };
 
 export const fetchFeaturedTutors = async () => {
+  console.log("Current API URL:", process.env.NEXT_PUBLIC_API_URL);
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/featured-tutors`,
