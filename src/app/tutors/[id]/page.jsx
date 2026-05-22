@@ -82,7 +82,7 @@ export default function TutorDetailsPage() {
       };
 
       await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/tutor/${id}`,
+        `https://tutor-server-09.onrender.com/tutor/${id}`,
         bookingInfo,
         {
           headers: {
