@@ -37,7 +37,7 @@ const TutorCard = ({ tutor }) => {
       });
       return;
     }
-    router.push(`/tutors/${_id}`);
+    router.push(`/tutor/${_id}`);
   };
 
   return (

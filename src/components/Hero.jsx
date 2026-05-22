@@ -43,7 +43,7 @@ const Hero = () => {
                                     Connect with certified doctors, senior medical students, and industry experts. Secure your learning slots today and boost your medical career.
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                                    <Link href="/tutors">
+                                    <Link href="/tutor">
                                         <Button
                                             color="primary"
                                             size="lg"
@@ -118,7 +118,7 @@ const Hero = () => {
                                     Our interactive platform allows you to check tutor availability instantly. Grab your preferred slot before it runs out!
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                                    <Link href="/tutors">
+                                    <Link href="/tutor">
                                         <Button
                                             color="success"
                                             size="lg"
@@ -165,7 +165,7 @@ const Hero = () => {
                                     Every tutor on MediQueue goes through a rigorous screening process. Learn premium medical concepts with complete trust.
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                                    <Link href="/tutors">
+                                    <Link href="/tutor">
                                         <Button
                                             color="secondary"
                                             size="lg"

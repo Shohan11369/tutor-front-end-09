@@ -8,7 +8,7 @@ export default function TutorsSection() {
 
   useEffect(() => {
     
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/tutors?limit=6`) 
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/tutor?limit=6`) 
       .then((res) => res.json())
       .then((data) => {
         setTutors(data);
